@@ -193,38 +193,68 @@ const animationTimeline = () => {
       },
       "-=2"
     )
-    .from(".wish-hbd", 0.5, {
+    .from(".hat", 0.5, {
+      x: -100,
+      y: 350,
+      rotation: -180,
       opacity: 0,
-      y: 10,
     })
-    .to(".wish h5", 0.5, {
-      visibility: "visible",
-      opacity: 1,
-      onComplete: function() {
-        tl.pause();
-        document.querySelector('.wish h5').addEventListener('click', function handler() {
-          this.removeEventListener('click', handler);
-          tl.resume();
-        });
-      }
-    })
-    .staggerTo(
-      ".eight svg",
-      1.5,
+    .staggerFrom(
+      ".wish-hbd span",
+      0.7,
       {
-        visibility: "visible",
         opacity: 0,
-        scale: 80,
-        repeat: 3,
-        repeatDelay: 1.4,
+        y: -50,
+        rotation: 150,
+        skewX: "30deg",
+        ease: Elastic.easeOut.config(1, 0.5),
       },
-      0.3
+      0.1
     )
-    .to(".six", 0.5, {
-      opacity: 0,
-      y: 30,
-      zIndex: "-1",
-    })
+    .staggerFromTo(
+      ".wish-hbd span",
+      0.7,
+      {
+        scale: 1.4,
+        rotationY: 150,
+      },
+      {
+        scale: 1,
+        rotationY: 0,
+        color: "#ff69b4",
+        ease: Expo.easeOut,
+      },
+      0.1,
+      "party"
+    )
+    .from(
+      ".wish h5",
+      0.5,
+      {
+        opacity: 0,
+        y: 10,
+        skewX: "-15deg",
+        onComplete: function() {
+          // Show modal with wish text
+          const wishText = document.getElementById("wishText").innerText;
+          const modalWishText = document.getElementById("modalWishText");
+          const modal = document.querySelector(".wish-text-container");
+          
+          modalWishText.innerText = wishText;
+          modal.style.display = "block";
+          
+          // Pause the timeline
+          tl.pause();
+          
+          // Continue button handler
+          document.querySelector(".continue-button").onclick = function() {
+            modal.style.display = "none";
+            tl.resume();
+          };
+        }
+      },
+      "party"
+    )
     .staggerFrom(".nine p", 1, ideaTextTrans, 1.2)
     .to(
       ".last-smile",
