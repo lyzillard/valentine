@@ -205,6 +205,7 @@ const animationTimeline = () => {
       {
         opacity: 0,
         y: -50,
+        // scale: 0.3,
         rotation: 150,
         skewX: "30deg",
         ease: Elastic.easeOut.config(1, 0.5),
@@ -234,27 +235,26 @@ const animationTimeline = () => {
         opacity: 0,
         y: 10,
         skewX: "-15deg",
-        onComplete: function() {
-          // Show modal with wish text
-          const wishText = document.getElementById("wishText").innerText;
-          const modalWishText = document.getElementById("modalWishText");
-          const modal = document.querySelector(".wish-text-container");
-          
-          modalWishText.innerText = wishText;
-          modal.style.display = "block";
-          
-          // Pause the timeline
-          tl.pause();
-          
-          // Continue button handler
-          document.querySelector(".continue-button").onclick = function() {
-            modal.style.display = "none";
-            tl.resume();
-          };
-        }
       },
       "party"
     )
+    .staggerTo(
+      ".eight svg",
+      1.5,
+      {
+        visibility: "visible",
+        opacity: 0,
+        scale: 80,
+        repeat: 3,
+        repeatDelay: 1.4,
+      },
+      0.3
+    )
+    .to(".six", 0.5, {
+      opacity: 0,
+      y: 30,
+      zIndex: "-1",
+    })
     .staggerFrom(".nine p", 1, ideaTextTrans, 1.2)
     .to(
       ".last-smile",
